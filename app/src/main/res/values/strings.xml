@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Random Number</string>
+    <string name="generate">Generate</string>
+    <string name="MaxNum">Max Number:</string>
+    <string name="MinNum">Min Number:</string>
+    <string name="AutoCopy">Auto Copy</string>
+    <string name="Copy">Copy</string>
+    <string name="Settings">Settings</string>
+    <string name="Settings_Creator">Hirbod Behnam &amp; Android Studio | No Support Library &amp; Java</string>
+    <string-array name="lang_array">
+        <item>English</item>
+        <item>فارسی</item>
+    </string-array>
+</resources>
