@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.hirbod.randomnumbergenerator"
-        minSdkVersion 7
+        minSdkVersion 5
         targetSdkVersion 24
         versionCode 6
         versionName "1.1.1"
