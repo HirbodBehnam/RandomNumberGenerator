@@ -114,6 +114,21 @@ public class SettingsActivity extends Activity {
                 startActivity(intent);
             }
         });
+        //Other apps
+        findViewById(R.id.otherAppsBTN).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("bazaar://collection?slug=by_author&aid=" + "hirbod_behnam"));
+                    intent.setPackage("com.farsitel.bazaar");
+                    startActivity(intent);
+                }catch (Exception ex){
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://cafebazaar.ir/developer/hirbod_behnam"));
+                    startActivity(browserIntent);
+                }
+            }
+        });
     }
 
 
@@ -127,5 +142,6 @@ public class SettingsActivity extends Activity {
         ((TextView) findViewById(R.id.textView4)).setText("زبان");
         ((CheckBox) findViewById(R.id.multiRandomCheckbox)).setText("ساخت چندین عدد تصادفی");
         ((Button) findViewById(R.id.voteBTN)).setText("رای دهید");
+        ((Button) findViewById(R.id.otherAppsBTN)).setText("برنامه های دیگر");
     }
 }

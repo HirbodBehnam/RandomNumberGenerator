@@ -55,13 +55,19 @@
         android:id="@+id/voteBTN"
         android:layout_below="@+id/multiRandomCheckbox"
         android:layout_centerHorizontal="true" />
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other Apps"
+        android:id="@+id/otherAppsBTN"
+        android:layout_below="@+id/voteBTN"
+        android:layout_centerHorizontal="true" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="GitHub"
         android:id="@+id/ShowSourceBTN"
-        android:layout_below="@+id/voteBTN"
+        android:layout_below="@+id/otherAppsBTN"
         android:layout_centerHorizontal="true" />
 
     <TextView
