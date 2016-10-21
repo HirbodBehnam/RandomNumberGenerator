@@ -65,7 +65,8 @@
         android:text="Save"
         android:id="@+id/SaveBTN"
         android:layout_above="@+id/banner_ad_view"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:enabled="false"/>
 
     <ir.adad.client.Banner
         android:id="@+id/banner_ad_view"

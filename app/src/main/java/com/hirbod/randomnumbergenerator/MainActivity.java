@@ -200,35 +200,24 @@ public class MainActivity extends Activity {
     }
     private void showNums(float Min,float Max){
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        if(resDialogMulti == 0 || resDialogMulti == -1){//0 or nothing
+        if(resDialogMulti == 0 || resDialogMulti == -1) {//0 or nothing
             AlertDialog.Builder mad = new AlertDialog.Builder(MainActivity.this);
-            if(preferences.getInt("Lang",0) == 0){
+            if (preferences.getInt("Lang", 0) == 0) {
                 mad
                         .setTitle("Error")
                         .setMessage("The value could not be 0 or empty.");
-            }else{
+            } else {
                 mad
                         .setTitle("خطا")
                         .setMessage("عدد وارد شده نمی تواند 0 یا خالی باشد.");
             }
-            mad.setPositiveButton("OK",null);
+            mad.setPositiveButton("OK", null);
             mad.show();
             return;
         }
-        //Generate
-        ArrayList<String> randoms = new ArrayList<>();
-        if(isInteger(Max) && isInteger(Min)) {
-            for (int i = 1; i <= resDialogMulti; i++) {
-                    randoms.add(String.valueOf(random(Min, Max)).replace(".0",""));
-            }
-        }else{
-            for (int i = 1; i <= resDialogMulti; i++) {
-                    randoms.add(String.valueOf(random(Min, Max)));
-            }
-        }
         //Pass it to activity
         Bundle b = new Bundle();
-        b.putStringArray("numbers",randoms.toArray(new String[randoms.size()]));
+        b.putInt("ToCreate",resDialogMulti);
         b.putFloat("Max",Max);
         b.putFloat("Min",Min);
         Intent i = new Intent(MainActivity.this, ShowNumsActivity.class);
