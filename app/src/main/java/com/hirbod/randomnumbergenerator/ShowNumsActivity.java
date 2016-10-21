@@ -51,7 +51,7 @@ public class ShowNumsActivity extends Activity {
         FMax = b.getFloat("Max");
         FMin = b.getFloat("Min");
         resDialogMulti = b.getInt("ToCreate");
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.activity_listview, new String[]{"Generating Numbers..."});
+        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.activity_listview, new String[]{"Generating Numbers...","Please Wait..."});
         ((ListView) findViewById(R.id.listView)).setAdapter(adapter);
         //Reset every thing
         randoms = new ArrayList<>();
