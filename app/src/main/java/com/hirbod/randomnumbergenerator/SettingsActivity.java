@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 public class SettingsActivity extends Activity {
     private byte counter = 0;
+    private static boolean ShowBuildVer = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,6 +128,22 @@ public class SettingsActivity extends Activity {
                 }catch (Exception ex){
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://cafebazaar.ir/developer/hirbod_behnam"));
                     startActivity(browserIntent);
+                }
+            }
+        });
+        //Show build
+        findViewById(R.id.textView5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    ShowBuildVer = !ShowBuildVer;
+                    if (ShowBuildVer)
+                        ((TextView) findViewById(R.id.textView5)).setText("Version " + pInfo.versionName + " Build " + pInfo.versionCode);
+                    else
+                        ((TextView) findViewById(R.id.textView5)).setText(R.string.Settings_Creator);
+                }catch (Exception ex){
+                    ex.printStackTrace();
                 }
             }
         });
