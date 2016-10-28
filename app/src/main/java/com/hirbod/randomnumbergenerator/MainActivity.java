@@ -2,6 +2,7 @@ package com.hirbod.randomnumbergenerator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,10 +19,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import ir.adad.client.Adad;
+import ir.adad.client.Banner;
 
 public class MainActivity extends Activity {
     Random rand = new Random();
@@ -29,8 +30,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Ads
-        Adad.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         //Max and min holder
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -42,10 +41,15 @@ public class MainActivity extends Activity {
         editor.putInt("Lang",preferences.getInt("Lang",0));
         editor.commit();
         //Set lang
-        //ad
-        Adad.prepareInterstitialAd();
-        Adad.enableBannerAds();
         if(preferences.getInt("Lang",0) == 1){changeFarsi();}
+        //No add on android 2
+        if(Build.VERSION.SDK_INT > 9){
+            Adad.initialize(getApplicationContext());
+            Adad.prepareInterstitialAd();
+            Adad.enableBannerAds();
+        }
+        //ad
+
         //Disable edits on main text box
         findViewById(R.id.editText).setFocusable(false);
         //Auto copy
@@ -173,6 +177,7 @@ public class MainActivity extends Activity {
     }
     private void getNumberRandomDialog(float Min,float Max){
         //Final
+        final Context c = this;
         final float Min1 = Min;
         final float Max1 = Max;
         //Other
@@ -189,10 +194,25 @@ public class MainActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 try {
                     resDialogMulti = Integer.parseInt(input.getText().toString());
+                    if(resDialogMulti > 5000000){
+                        resDialogMulti = -1;
+                        AlertDialog.Builder builder = new AlertDialog.Builder(c);
+                        if(preferences.getInt("Lang",0) == 1){
+                            builder.setTitle("خطا");
+                            builder.setMessage("شما نمی توانید عددی بیشتر از پنج میلیون وارد کنید.");
+                        }else{
+                            builder.setTitle("Error");
+                            builder.setMessage("You cannot enter number more than 5000000.");
+                        }
+                        builder.setPositiveButton("OK",null);
+                        builder.show();
+                    }else {
+                        showNums(Min1,Max1);
+                    }
                 }catch (NumberFormatException ex){
                     resDialogMulti = -1;
+                    showNums(Min1,Max1);
                 }
-                showNums(Min1,Max1);
             }
         });
         builder.setNegativeButton("Cancel", null);

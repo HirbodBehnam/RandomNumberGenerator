@@ -25,7 +25,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Sum: "
         android:id="@+id/SumView"
-        android:layout_below="@+id/listView"
+        android:layout_above="@+id/AverageView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -36,7 +36,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/SaveBTN" />
+        android:layout_above="@+id/SumView" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -57,16 +57,6 @@
         android:layout_above="@+id/banner_ad_view"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:id="@+id/SaveBTN"
-        android:layout_above="@+id/banner_ad_view"
-        android:layout_centerHorizontal="true"
-        android:enabled="false"/>
 
     <ir.adad.client.Banner
         android:id="@+id/banner_ad_view"
