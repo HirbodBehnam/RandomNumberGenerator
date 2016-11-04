@@ -1,19 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         applicationId "com.hirbod.randomnumbergenerator"
         minSdkVersion 5
-        targetSdkVersion 23
-        versionCode 11
-        versionName "1.2.1"
+        targetSdkVersion 24
+        versionCode 12
+        versionName "1.2.2"
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

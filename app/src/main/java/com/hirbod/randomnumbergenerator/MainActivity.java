@@ -1,5 +1,6 @@
 package com.hirbod.randomnumbergenerator;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -22,7 +23,6 @@ import android.widget.Toast;
 import java.util.Random;
 
 import ir.adad.client.Adad;
-import ir.adad.client.Banner;
 
 public class MainActivity extends Activity {
     Random rand = new Random();
@@ -30,6 +30,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT >= 9)
+            Adad.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         //Max and min holder
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -42,14 +44,10 @@ public class MainActivity extends Activity {
         editor.commit();
         //Set lang
         if(preferences.getInt("Lang",0) == 1){changeFarsi();}
-        //No add on android 2
-        if(Build.VERSION.SDK_INT > 9){
-            Adad.initialize(getApplicationContext());
-            Adad.prepareInterstitialAd();
-            Adad.enableBannerAds();
-        }
-        //ad
-
+        //Location For ads
+        if(Build.VERSION.SDK_INT >= 23)
+            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && preferences.getInt("Request",0) == 0)
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         //Disable edits on main text box
         findViewById(R.id.editText).setFocusable(false);
         //Auto copy
@@ -61,14 +59,6 @@ public class MainActivity extends Activity {
                     editor.commit();
                 }
         });
-        //Ask location
-        if(Build.VERSION.SDK_INT >= 23){
-            if(checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                if (!shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_COARSE_LOCATION)){
-                    requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-                }
-            }
-        }
         //Settings
         findViewById(R.id.SettingsBTN).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,11 +248,14 @@ public class MainActivity extends Activity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor editor = preferences.edit();
         switch (requestCode) {
             case 1: {
                 if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     if(preferences.getInt("Lang",0) == 0) Toast.makeText(this,"This permission is only needed for better advertising.",Toast.LENGTH_SHORT).show();
                     else Toast.makeText(this,"این دسترسی فقط برای نشان دادن تبلیغات بهتر مورد نیاز است.",Toast.LENGTH_SHORT).show();
+                    editor.putInt("Request",1);
+                    editor.commit();
                 }
             }
         }
