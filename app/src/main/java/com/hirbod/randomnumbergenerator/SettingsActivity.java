@@ -78,7 +78,7 @@ public class SettingsActivity extends Activity {
                         .setMessage("Use this option to create multiply random numbers is specific range. App will also give you the average of numbers and write it as text.")
                         .setPositiveButton("OK",null);
                 }
-                mad.setIcon(R.drawable.ic_help_white_24px);
+                mad.setIcon(R.drawable.ic_help_white_24dp);
                 mad.show();
             }
         });
