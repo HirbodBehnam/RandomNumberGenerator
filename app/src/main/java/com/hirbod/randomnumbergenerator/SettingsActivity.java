@@ -29,7 +29,6 @@ public class SettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         if(Build.VERSION.SDK_INT >= 11){try{getActionBar().setDisplayHomeAsUpEnabled(true);}catch (Exception e){e.printStackTrace();}}
-        if(Build.VERSION.SDK_INT >= 7){((ImageButton) findViewById(R.id.multiplyHelp)).setImageResource(R.drawable.ic_help_white_24dp);}
         //Lang
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = preferences.edit();
@@ -40,11 +39,11 @@ public class SettingsActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 editor.putBoolean("multiRandom",isChecked);
-                editor.commit();
+                editor.apply();
             }
         });
         //Spinner
-        Spinner spinner = (Spinner) findViewById(R.id.LangSpinner);
+        Spinner spinner = findViewById(R.id.LangSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.lang_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -79,7 +78,7 @@ public class SettingsActivity extends Activity {
                         .setMessage("Use this option to create multiply random numbers is specific range. App will also give you the average of numbers and write it as text.")
                         .setPositiveButton("OK",null);
                 }
-                if(Build.VERSION.SDK_INT >= 7){mad.setIcon(R.drawable.ic_help_white_24dp);}else{mad.setIcon(R.drawable.ic_help_white_24px);}
+                mad.setIcon(R.drawable.ic_help_white_24px);
                 mad.show();
             }
         });
@@ -105,6 +104,7 @@ public class SettingsActivity extends Activity {
                                 .setNegativeButton("Close",null);
                         if(preferences.getInt("Lang",0) == 0){mad.setMessage("Please install bazaar to rate!").setTitle("Error");}
                         else{mad.setMessage("لطفا بازار را نصب کنید.").setTitle("خطا");}
+						mad.show();
                     }
             }
         });

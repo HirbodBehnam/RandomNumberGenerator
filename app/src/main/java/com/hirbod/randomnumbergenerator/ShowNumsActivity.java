@@ -334,14 +334,12 @@ public class ShowNumsActivity extends Activity {
                             ((TextView) findViewById(R.id.SumView)).setText("Sum: " + String.valueOf(summed).replace(".0",""));
                         }else{
                             ((TextView) findViewById(R.id.SumView)).setText("جمع: " + String.valueOf(summed).replace(".0",""));
-                            ((Button) findViewById(R.id.SaveBTN)).setText("ذخیره");
                         }
                     }else{
                         if(preferences.getInt("Lang",0) == 0) {
                             ((TextView) findViewById(R.id.SumView)).setText("Sum: " + summed);
                         }else{
                             ((TextView) findViewById(R.id.SumView)).setText("جمع: " + summed);
-                            ((Button) findViewById(R.id.SaveBTN)).setText("ذخیره");
                         }
                     }
                     if(preferences.getInt("Lang",0) == 0) {

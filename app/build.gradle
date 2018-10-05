@@ -1,23 +1,24 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "25.0.0"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "com.hirbod.randomnumbergenerator"
-        minSdkVersion 5
-        targetSdkVersion 24
-        versionCode 12
-        versionName "1.2.2"
+        minSdkVersion 10
+        targetSdkVersion 28
+        versionCode 13
+        versionName "1.2.3"
     }
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            proguardFiles.add(file("proguard-rules.pro"))
         }
     }
 }
 dependencies{
-    compile files("libs/adad-client-3.1.jar")
+    implementation 'ir.adad.androidsdkv3:AdadSDKv3:3.3.1'
 }

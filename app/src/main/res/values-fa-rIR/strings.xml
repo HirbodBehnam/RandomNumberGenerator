@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Random Number</string>
+    <string name="SaveMenuText">ذخیره ی اعداد</string>
+    <string name="generate">بسار</string>
+    <string name="MaxNum">بیشترین عدد:</string>
+    <string name="MinNum">کمترین عدد:</string>
+    <string name="AutoCopy">کپی خودکار</string>
+    <string name="Copy">کپی</string>
+    <string name="Settings">تنظیمات</string>
+    <string name="Settings_Creator">Hirbod Behnam &amp; Android Studio | No Support Library &amp; Java</string>
+</resources>

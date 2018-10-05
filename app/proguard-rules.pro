@@ -18,3 +18,4 @@
 -keep public class ir.adad.client.** {
    *;
 }
+-dontwarn **

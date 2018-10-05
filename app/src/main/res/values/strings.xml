@@ -11,4 +11,5 @@
         <item>English</item>
         <item>فارسی</item>
     </string-array>
+    <string name="SaveMenuText">Save Numbers</string>
 </resources>
