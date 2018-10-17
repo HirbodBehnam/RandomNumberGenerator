@@ -15,10 +15,10 @@ android {
         release {
             minifyEnabled true
             debuggable false
-            proguardFiles.add(file("proguard-rules.pro"))
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
-dependencies{
-    implementation 'ir.adad.androidsdkv3:AdadSDKv3:3.3.1'
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

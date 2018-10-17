@@ -30,8 +30,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(Build.VERSION.SDK_INT >= 9)
-            Adad.initialize(getApplicationContext());
+        Adad.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         //Max and min holder
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -70,7 +69,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.Copy_BTN).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                android.text.ClipboardManager clipboard = (android.text.ClipboardManager) MainActivity.this.getSystemService(MainActivity.this.CLIPBOARD_SERVICE);
+                android.text.ClipboardManager clipboard = (android.text.ClipboardManager) MainActivity.this.getSystemService(Activity.CLIPBOARD_SERVICE);
                 clipboard.setText(((EditText) findViewById(R.id.editText)).getText().toString());
                 Toast.makeText(MainActivity.this,"Copied",Toast.LENGTH_SHORT).show();
             }
@@ -136,7 +135,7 @@ public class MainActivity extends Activity {
                 editor.commit();
                 //Auto Copy
                 if(((CheckBox) findViewById(R.id.checkBox)).isChecked()){
-                    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) MainActivity.this.getSystemService(MainActivity.this.CLIPBOARD_SERVICE);
+                    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) MainActivity.this.getSystemService(Activity.CLIPBOARD_SERVICE);
                     clipboard.setText(((EditText) findViewById(R.id.editText)).getText().toString());
                 }
             }

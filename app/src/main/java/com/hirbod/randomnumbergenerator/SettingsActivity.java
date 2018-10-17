@@ -17,13 +17,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 public class SettingsActivity extends Activity {
     private byte counter = 0;
-    private static boolean ShowBuildVer = false;
+    private boolean ShowBuildVer = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
