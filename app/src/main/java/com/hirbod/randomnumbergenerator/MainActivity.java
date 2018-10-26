@@ -43,10 +43,6 @@ public class MainActivity extends Activity {
         editor.commit();
         //Set lang
         if(preferences.getInt("Lang",0) == 1){changeFarsi();}
-        //Location For ads
-        if(Build.VERSION.SDK_INT >= 23)
-            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && preferences.getInt("Request",0) == 0)
-                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         //Disable edits on main text box
         findViewById(R.id.editText).setFocusable(false);
         //Auto copy
@@ -244,19 +240,4 @@ public class MainActivity extends Activity {
         ((CheckBox) findViewById(R.id.checkBox)).setText("کپی خودکار");
     }
     public static boolean isInteger(float str) { return str % 1 == 0; }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final SharedPreferences.Editor editor = preferences.edit();
-        switch (requestCode) {
-            case 1: {
-                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    if(preferences.getInt("Lang",0) == 0) Toast.makeText(this,"This permission is only needed for better advertising.",Toast.LENGTH_SHORT).show();
-                    else Toast.makeText(this,"این دسترسی فقط برای نشان دادن تبلیغات بهتر مورد نیاز است.",Toast.LENGTH_SHORT).show();
-                    editor.putInt("Request",1);
-                    editor.commit();
-                }
-            }
-        }
-    }
 }
