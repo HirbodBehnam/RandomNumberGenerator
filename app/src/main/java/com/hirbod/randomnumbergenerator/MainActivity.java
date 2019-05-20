@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import java.util.Random;
 
-import ir.adad.client.Adad;
+import ir.adad.core.Adad;
 
 public class MainActivity extends Activity {
     Random rand = new Random();
@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Adad.initialize(getApplicationContext());
+        Adad.initialize("4a49ad47cc4241c78b1df621ff63e517");
         setContentView(R.layout.activity_main);
         //Max and min holder
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     editor.putBoolean("Copy",isChecked);
-                    editor.commit();
+                    editor.apply();
                 }
         });
         //Settings
@@ -62,8 +62,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.Copy_BTN).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                android.text.ClipboardManager clipboard = (android.text.ClipboardManager) MainActivity.this.getSystemService(Activity.CLIPBOARD_SERVICE);
-                clipboard.setText(((EditText) findViewById(R.id.editText)).getText().toString());
+                SetClipboard(MainActivity.this,((EditText) findViewById(R.id.editText)).getText().toString());
                 Toast.makeText(MainActivity.this,"Copied",Toast.LENGTH_SHORT).show();
             }
         });
@@ -125,14 +124,17 @@ public class MainActivity extends Activity {
                 //Save Values
                 editor.putFloat("Max",Max);
                 editor.putFloat("Min",Min);
-                editor.commit();
+                editor.apply();
                 //Auto Copy
-                if(((CheckBox) findViewById(R.id.checkBox)).isChecked()){
-                    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) MainActivity.this.getSystemService(Activity.CLIPBOARD_SERVICE);
-                    clipboard.setText(((EditText) findViewById(R.id.editText)).getText().toString());
-                }
+                if(((CheckBox) findViewById(R.id.checkBox)).isChecked())
+                    SetClipboard(MainActivity.this,((EditText) findViewById(R.id.editText)).getText().toString());
             }
         });
+    }
+    public static void SetClipboard(Context context,String text){
+        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        android.content.ClipData clip = android.content.ClipData.newPlainText("Random Number", text);
+        clipboard.setPrimaryClip(clip);
     }
     public float random(float Min,float Max){
         float res;
