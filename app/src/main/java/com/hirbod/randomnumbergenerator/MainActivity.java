@@ -1,14 +1,11 @@
 package com.hirbod.randomnumbergenerator;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputType;
@@ -40,7 +37,7 @@ public class MainActivity extends Activity {
         editor.putBoolean("Copy",preferences.getBoolean("Copy",true));
         editor.putBoolean("multiRandom",preferences.getBoolean("multiRandom",false));
         editor.putInt("Lang",preferences.getInt("Lang",0));
-        editor.commit();
+        editor.apply();
         //Set lang
         if(preferences.getInt("Lang",0) == 1){changeFarsi();}
         //Disable edits on main text box
@@ -89,7 +86,7 @@ public class MainActivity extends Activity {
                         ((EditText) findViewById(R.id.MaxNumber_EditText)).setText(String.valueOf(preferences.getFloat("Max",100)));
                         throw new Exception("Max number is bigger than " + Integer.MAX_VALUE);
                     }
-                    if(Max > Integer.MAX_VALUE)
+                    if(Min > Integer.MAX_VALUE)
                     {
                         ((EditText) findViewById(R.id.MinNumber_EditText)).setText(String.valueOf(preferences.getFloat("Min",1)));
                         throw new Exception("Min number is bigger than" + Integer.MAX_VALUE);
