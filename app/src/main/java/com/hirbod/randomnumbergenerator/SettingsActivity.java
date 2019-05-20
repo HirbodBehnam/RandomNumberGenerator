@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -22,12 +21,11 @@ import android.widget.TextView;
 
 public class SettingsActivity extends Activity {
     private byte counter = 0;
-    private boolean ShowBuildVer = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        if(Build.VERSION.SDK_INT >= 11){try{getActionBar().setDisplayHomeAsUpEnabled(true);}catch (Exception e){e.printStackTrace();}}
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         //Lang
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = preferences.edit();
@@ -87,7 +85,7 @@ public class SettingsActivity extends Activity {
             public void onClick(View v) {
                     try {
                         Intent intent = new Intent(Intent.ACTION_EDIT);
-                        intent.setData(Uri.parse("bazaar://details?id=" + "com.hirbod.randomnumbergenerator"));
+                        intent.setData(Uri.parse("bazaar://details?id=com.hirbod.randomnumbergenerator"));
                         intent.setPackage("com.farsitel.bazaar");
                         startActivity(intent);
                     }catch (Exception ex){
@@ -136,13 +134,10 @@ public class SettingsActivity extends Activity {
             public void onClick(View v) {
                 try {
                     PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                    ShowBuildVer = !ShowBuildVer;
-                    if (ShowBuildVer)
-                        ((TextView) findViewById(R.id.textView5)).setText("Version " + pInfo.versionName + " Build " + pInfo.versionCode);
-                    else
-                        ((TextView) findViewById(R.id.textView5)).setText(R.string.Settings_Creator);
+                    ((TextView) findViewById(R.id.textView5)).setText("Version " + pInfo.versionName + " Build " + pInfo.versionCode);
                 }catch (Exception ex){
                     ex.printStackTrace();
+                    ((TextView) findViewById(R.id.textView5)).setText(R.string.Settings_Creator);
                 }
             }
         });

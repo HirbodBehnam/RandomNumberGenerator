@@ -48,7 +48,7 @@ public class ShowNumsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_nums);
-        if(Build.VERSION.SDK_INT >= 11){try{getActionBar().setDisplayHomeAsUpEnabled(true);}catch (Exception e){e.printStackTrace();}}
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         //ProgressDialog
         pd = new ProgressDialog(this);
         pd.setMessage("Writing To File...");
@@ -92,29 +92,25 @@ public class ShowNumsActivity extends Activity {
     }
     @Override
     public boolean onKeyDown(int keycode, KeyEvent e) {
-        switch(keycode) {
-            case KeyEvent.KEYCODE_MENU:
-                SAVE();
-                return true;
+        if (keycode == KeyEvent.KEYCODE_MENU) {
+            SAVE();
+            return true;
         }
 
         return super.onKeyDown(keycode, e);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.SaveBTN:
-                SAVE();
-                break;
-            default:
-                g.cancel(true);
-                randoms = new ArrayList<>();
-                ((ListView) findViewById(R.id.listView)).setAdapter(null);
-                //Running garbage collector to clear randoms array and ArrayAdapter
-                System.gc();
-                System.runFinalization();
-                super.onBackPressed();
-                break;
+        if (item.getItemId() == R.id.SaveBTN)
+            SAVE();
+        else {
+            g.cancel(true);
+            randoms = new ArrayList<>();
+            ((ListView) findViewById(R.id.listView)).setAdapter(null);
+            //Running garbage collector to clear randoms array and ArrayAdapter
+            System.gc();
+            System.runFinalization();
+            super.onBackPressed();
         }
         super.onOptionsItemSelected(item);
         return true;
@@ -127,9 +123,8 @@ public class ShowNumsActivity extends Activity {
                 fileName = "";
                 final AlertDialog.Builder builder = new AlertDialog.Builder(ShowNumsActivity.this);
                 builder.setTitle("Please enter filename:");
-                if (preferences.getInt("Lang", 0) == 1) {
+                if (preferences.getInt("Lang", 0) == 1)
                     builder.setTitle("لطفا اسم فایل را وارد کنید.");
-                }
                 final EditText input = new EditText(ShowNumsActivity.this);
                 builder.setView(input);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -167,6 +162,12 @@ public class ShowNumsActivity extends Activity {
                                 startApplicationDetailsActivity();
                             }
                         });
+                        mad.setNeutralButton("Request Again", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+                            }
+                        });
                     }else{
                         mad.setMessage("این دسترسی برای ذخیره کردن این لیست نیاز است.");
                         mad.setTitle("خطا");
@@ -175,6 +176,12 @@ public class ShowNumsActivity extends Activity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 startApplicationDetailsActivity();
+                            }
+                        });
+                        mad.setNeutralButton("درخواست مجدد", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
                             }
                         });
                     }
@@ -190,35 +197,35 @@ public class ShowNumsActivity extends Activity {
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 0: {
-                // If request is cancelled, the result arrays are empty.
-                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-                    AlertDialog.Builder mad = new AlertDialog.Builder(this);
-                    if(preferences.getInt("Lang",0) == 0) {
-                        mad.setMessage("This permission is needed to save this list.");
-                        mad.setMessage("Error");
-                        mad.setNegativeButton("OK",null);
-                        mad.setPositiveButton("Go To Settings", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startApplicationDetailsActivity();
-                            }
-                        });
-                    }else{
-                        mad.setMessage("این دسترسی برای ذخیره کردن این لیست نیاز است.");
-                        mad.setTitle("خطا");
-                        mad.setNegativeButton("باشه",null);
-                        mad.setPositiveButton("برو به تنظیمات", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startApplicationDetailsActivity();
-                            }
-                        });
-                    }
-                    mad.show();
+        // If request is cancelled, the result arrays are empty.
+        if (requestCode == 0) {
+            if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                AlertDialog.Builder mad = new AlertDialog.Builder(this);
+                if (preferences.getInt("Lang", 0) == 0) {
+                    mad.setMessage("This permission is needed to save this list.");
+                    mad.setTitle("Error");
+                    mad.setNegativeButton("OK", null);
+                    mad.setPositiveButton("Go To Settings", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startApplicationDetailsActivity();
+                        }
+                    });
+                } else {
+                    mad.setMessage("این دسترسی برای ذخیره کردن این لیست نیاز است.");
+                    mad.setTitle("خطا");
+                    mad.setNegativeButton("باشه", null);
+                    mad.setPositiveButton("برو به تنظیمات", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startApplicationDetailsActivity();
+                        }
+                    });
                 }
+                mad.show();
+            }else{
+                SAVE();
             }
         }
     }
@@ -262,11 +269,9 @@ public class ShowNumsActivity extends Activity {
             sb.append(min);
             try{
                 //Create new folder
-                if(!new File(Environment.getExternalStorageDirectory() + File.separator + "Random Numbers List").exists()){
-                    if(new File(Environment.getExternalStorageDirectory() + File.separator + "Random Numbers List").mkdir()){
+                if(!new File(Environment.getExternalStorageDirectory() + File.separator + "Random Numbers List").exists())
+                    if(new File(Environment.getExternalStorageDirectory() + File.separator + "Random Numbers List").mkdir())
                         throw new Exception("Cannot create new folder.");
-                    }
-                }
                 //Write
                 FileOutputStream stream = new FileOutputStream(new File(Environment.getExternalStorageDirectory() + File.separator + "Random Numbers List" + File.separator + fileName + ".txt"));
                 stream.write(sb.toString().getBytes());
@@ -282,13 +287,12 @@ public class ShowNumsActivity extends Activity {
             pd.dismiss();
             if(s == null)
                 Toast.makeText(ShowNumsActivity.this,"File saved at Storage/Random Numbers List/" + fileName + ".txt",Toast.LENGTH_LONG).show();
-            else {
+            else
                 new AlertDialog.Builder(ShowNumsActivity.this)
                         .setMessage(s)
                         .setTitle("Error")
                         .setPositiveButton("OK",null)
                         .show();
-            }
             super.onPostExecute(s);
         }
     }
