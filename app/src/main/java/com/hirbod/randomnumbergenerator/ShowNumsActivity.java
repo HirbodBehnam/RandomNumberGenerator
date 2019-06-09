@@ -29,6 +29,12 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
+import ir.tapsell.sdk.Tapsell;
+import ir.tapsell.sdk.TapsellAd;
+import ir.tapsell.sdk.TapsellAdRequestListener;
+import ir.tapsell.sdk.TapsellAdRequestOptions;
+import ir.tapsell.sdk.TapsellShowOptions;
+
 public class ShowNumsActivity extends Activity {
     private boolean Done = false;
     private String fileName = "";
@@ -49,6 +55,38 @@ public class ShowNumsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_nums);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        {
+            TapsellAdRequestOptions options = new TapsellAdRequestOptions();
+            options.setCacheType(TapsellAdRequestOptions.CACHE_TYPE_STREAMED);
+            Tapsell.requestAd(this, "5cfd1c8daf72830001b77f5f", options, new TapsellAdRequestListener() {
+                @Override
+                public void onError(String s) {
+
+                }
+
+                @Override
+                public void onAdAvailable(TapsellAd tapsellAd) {
+                    tapsellAd.show(ShowNumsActivity.this,new TapsellShowOptions());
+                }
+
+                @Override
+                public void onNoAdAvailable() {
+
+                }
+
+                @Override
+                public void onNoNetwork() {
+
+                }
+
+                @Override
+                public void onExpiring(TapsellAd tapsellAd) {
+
+                }
+            });
+        }
+
         //ProgressDialog
         pd = new ProgressDialog(this);
         pd.setMessage("Writing To File...");
