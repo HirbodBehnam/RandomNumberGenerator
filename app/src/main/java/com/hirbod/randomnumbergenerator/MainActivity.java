@@ -19,15 +19,12 @@ import android.widget.Toast;
 
 import java.util.Random;
 
-import ir.adad.core.Adad;
-
 public class MainActivity extends Activity {
     Random rand = new Random();
     static int resDialogMulti = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Adad.initialize("4a49ad47cc4241c78b1df621ff63e517");
         setContentView(R.layout.activity_main);
         //Max and min holder
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);

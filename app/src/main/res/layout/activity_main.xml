@@ -121,11 +121,13 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/BottomOfPageLayout"
         android:gravity="center_horizontal">
-        <ir.adad.banner.AdadBannerAd
+        <ir.tapsell.sdk.bannerads.TapsellBannerView
             android:id="@+id/banner_ad_view"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:token="9a46c208-5198-4759-89ab-42206a659861"
+            app:tapsell_banner_type="banner_320x50"
+            app:tapsell_zone_id="5cfd01d63ea54800014dd610"
+            android:background="@android:color/transparent"
             android:layout_marginTop="2dp"/>
     </LinearLayout>
 
