@@ -3,7 +3,7 @@ In this app, you can quickly generate a random number in specific range.
 
 Some of abilities of this app:
 
--Android 2 Support<br>
+-Android 4 Support<br>
 -Negative Numbers Support<br>
 -Decimal Numbers Support<br>
 -Multiply Random Number Generator<br>
