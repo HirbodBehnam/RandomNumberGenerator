@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputType;
@@ -17,6 +20,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
+import java.net.URL;
 import java.util.Random;
 
 public class MainActivity extends Activity {
@@ -127,6 +134,13 @@ public class MainActivity extends Activity {
                     SetClipboard(MainActivity.this,((EditText) findViewById(R.id.editText)).getText().toString());
             }
         });
+        //Updater{
+        try{
+            int version = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+            new CheckUpdates(this, version).execute();
+        }catch (PackageManager.NameNotFoundException ex){
+            ex.printStackTrace();
+        }
     }
     public static void SetClipboard(Context context,String text){
         android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -236,4 +250,61 @@ public class MainActivity extends Activity {
         ((CheckBox) findViewById(R.id.checkBox)).setText("کپی خودکار");
     }
     public static boolean isInteger(float str) { return str % 1 == 0; }
+    private static class CheckUpdates extends AsyncTask<Void,Void,Integer>{
+        private WeakReference<MainActivity> activityReference;
+        private int currentVersion;
+        // only retain a weak reference to the activity
+        CheckUpdates(MainActivity context, int currentVersion) {
+            activityReference = new WeakReference<>(context);
+            this.currentVersion = currentVersion;
+        }
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            //https://alvinalexander.com/blog/post/java/java-how-read-from-url-string-text
+            int webVersion = Integer.MIN_VALUE;
+            try
+            {
+                URL url = new URL("https://raw.githubusercontent.com/HirbodBehnam/RandomNumberGenerator/master/app/build.gradle");
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
+                String line;
+                while ((line = bufferedReader.readLine()) != null){
+                    if(line.trim().startsWith("versionCode")){
+                        webVersion = Integer.parseInt(line.trim().split(" ")[1]);
+                        break;
+                    }
+                }
+                bufferedReader.close();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                return -1;
+            }
+            return webVersion > currentVersion ? webVersion : -1;
+        }
+
+        @Override
+        protected void onPostExecute(Integer nextVersion) {
+            super.onPostExecute(nextVersion);
+            if(nextVersion == -1)
+                return;
+            //https://stackoverflow.com/a/46166223/4213397
+            final MainActivity activity = activityReference.get();
+            if (activity == null || activity.isFinishing())
+                return;
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+            new AlertDialog.Builder(activity)
+                    .setMessage(preferences.getInt("Lang",0) == 1 ? ("یک آپدیت برنامه به ورژن ساخت " + nextVersion + " موجود است.") : ("A new update to build version " + nextVersion + " is available. Do you want to update?"))
+                    .setTitle(preferences.getInt("Lang",0) == 1 ? "آپدیت برنامه" : "Update Available")
+                    .setPositiveButton(preferences.getInt("Lang",0) == 1 ? "آپدیت" :"Update", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cafebazaar.ir/app/com.hirbod.randomnumbergenerator/"));
+                            activity.startActivity(browserIntent);
+                        }
+                    })
+                    .setNegativeButton(preferences.getInt("Lang",0) == 1 ? "بعدا" :"Later", null)
+                    .show();
+        }
+    }
 }
