@@ -14,8 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,16 +27,8 @@ public class SettingsActivity extends Activity {
         //Lang
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = preferences.edit();
-        if(preferences.getInt("Lang",0) == 1){changeFarsi();}
-        //Multiply
-        ((CheckBox) findViewById(R.id.multiRandomCheckbox)).setChecked(preferences.getBoolean("multiRandom",false));
-        ((CheckBox) findViewById(R.id.multiRandomCheckbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                editor.putBoolean("multiRandom",isChecked);
-                editor.apply();
-            }
-        });
+        if(preferences.getInt("Lang",0) == 1)
+            changeFarsi();
         //Spinner
         Spinner spinner = findViewById(R.id.LangSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.lang_array, android.R.layout.simple_spinner_item);
@@ -59,25 +49,6 @@ public class SettingsActivity extends Activity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
-        });
-        //Help
-        findViewById(R.id.multiplyHelp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder mad = new AlertDialog.Builder(SettingsActivity.this);
-                if(preferences.getInt("Lang",0) == 1){
-                    mad.setTitle("راهنما")
-                        .setMessage("این گزینه این قابلیت را به شما می دهد که چندین عدد تصادفی در یک محدوده بسازید. همچنین برنامه میانگین اعداد را به شما می دهد و می توانید آنرا به عنوان فایل متنی ذخیره کنید.")
-                        .setPositiveButton("باشه",null);
-                }else {
-                    mad
-                        .setTitle("Help")
-                        .setMessage("Use this option to create multiply random numbers is specific range. App will also give you the average of numbers and write it as text.")
-                        .setPositiveButton("OK",null);
-                }
-                mad.setIcon(R.drawable.ic_help_white_24dp);
-                mad.show();
-            }
         });
         //Vote
         findViewById(R.id.voteBTN).setOnClickListener(new View.OnClickListener() {
@@ -152,7 +123,6 @@ public class SettingsActivity extends Activity {
 
     private void changeFarsi(){
         ((TextView) findViewById(R.id.textView4)).setText("زبان");
-        ((CheckBox) findViewById(R.id.multiRandomCheckbox)).setText("ساخت چندین عدد تصادفی");
         ((Button) findViewById(R.id.voteBTN)).setText("رای دهید");
         ((Button) findViewById(R.id.otherAppsBTN)).setText("برنامه های دیگر");
     }

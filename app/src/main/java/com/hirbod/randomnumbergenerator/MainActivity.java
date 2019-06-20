@@ -43,7 +43,8 @@ public class MainActivity extends Activity {
         editor.putInt("Lang",preferences.getInt("Lang",0));
         editor.apply();
         //Set lang
-        if(preferences.getInt("Lang",0) == 1){changeFarsi();}
+        if(preferences.getInt("Lang",0) == 1)
+            changeFarsi();
         //Disable edits on main text box
         findViewById(R.id.editText).setFocusable(false);
         //Auto copy
@@ -54,6 +55,33 @@ public class MainActivity extends Activity {
                     editor.putBoolean("Copy",isChecked);
                     editor.apply();
                 }
+        });
+        //Multi-Random
+        ((CheckBox) findViewById(R.id.multiRandomCheckbox)).setChecked(preferences.getBoolean("multiRandom",false));
+        ((CheckBox) findViewById(R.id.multiRandomCheckbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                editor.putBoolean("multiRandom",isChecked);
+                editor.apply();
+            }
+        });
+        findViewById(R.id.multiplyHelp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mad = new AlertDialog.Builder(MainActivity.this);
+                if(preferences.getInt("Lang",0) == 1){
+                    mad.setTitle("راهنما")
+                            .setMessage("این گزینه این قابلیت را به شما می دهد که چندین عدد تصادفی در یک محدوده بسازید. همچنین برنامه میانگین اعداد را به شما می دهد و می توانید آنرا به عنوان فایل متنی ذخیره کنید.")
+                            .setPositiveButton("باشه",null);
+                }else {
+                    mad
+                            .setTitle("Help")
+                            .setMessage("Use this option to create multiply random numbers is specific range. App will also give you the average of numbers and write it as text.")
+                            .setPositiveButton("OK",null);
+                }
+                mad.setIcon(R.drawable.ic_help_white_24dp);
+                mad.show();
+            }
         });
         //Settings
         findViewById(R.id.SettingsBTN).setOnClickListener(new View.OnClickListener() {
@@ -248,6 +276,7 @@ public class MainActivity extends Activity {
         ((TextView) findViewById(R.id.textView2)).setText("بیشترین عدد");
         ((TextView) findViewById(R.id.textView3)).setText("کمترین عدد");
         ((CheckBox) findViewById(R.id.checkBox)).setText("کپی خودکار");
+        ((CheckBox) findViewById(R.id.multiRandomCheckbox)).setText("ساخت چندین عدد تصادفی");
     }
     public static boolean isInteger(float str) { return str % 1 == 0; }
     private static class CheckUpdates extends AsyncTask<Void,Void,Integer>{
