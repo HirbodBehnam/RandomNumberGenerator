@@ -23,5 +23,5 @@ android {
     }
 }
 dependencies {
-    implementation 'ir.tapsell.sdk:tapsell-sdk-android:4.2.7'
+    implementation 'ir.tapsell.sdk:tapsell-sdk-android:4.3.2'
 }
