@@ -12,22 +12,29 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
+import java.math.BigInteger;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 
+import static com.hirbod.randomnumbergenerator.Functions.fullRandomBig;
+
 public class MainActivity extends Activity {
-    Random rand = new Random();
     static int resDialogMulti = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +43,8 @@ public class MainActivity extends Activity {
         //Max and min holder
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = preferences.edit();
-        editor.putFloat("Max",preferences.getFloat("Max",100));
-        editor.putFloat("Min",preferences.getFloat("Min",1));
+        editor.putString("MaxS",preferences.getString("MaxS","100"));
+        editor.putString("MinS",preferences.getString("MinS","1"));
         editor.putBoolean("Copy",preferences.getBoolean("Copy",true));
         editor.putBoolean("multiRandom",preferences.getBoolean("multiRandom",false));
         editor.putInt("Lang",preferences.getInt("Lang",0));
@@ -99,63 +106,118 @@ public class MainActivity extends Activity {
             }
         });
         //Set Max and Min
-        ((EditText) findViewById(R.id.MaxNumber_EditText)).setText(String.valueOf(preferences.getFloat("Max",100)));
-        ((EditText) findViewById(R.id.MinNumber_EditText)).setText(String.valueOf(preferences.getFloat("Min",1)));
+        ((EditText) findViewById(R.id.MaxNumber_EditText)).setText(preferences.getString("MaxS","100"));
+        ((EditText) findViewById(R.id.MinNumber_EditText)).setText(preferences.getString("MinS","1"));
         //Generate Button
         findViewById(R.id.Generate_BTN).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Values
-                float Max;
-                float Min;
-                try {
-                    Max = Float.valueOf(((EditText) findViewById(R.id.MaxNumber_EditText)).getText().toString());
-                    Min = Float.valueOf(((EditText) findViewById(R.id.MinNumber_EditText)).getText().toString());
-                    if(Max <= Min) throw new Exception("Min number is bigger or equal to Max number.");
-                    if(Max > Integer.MAX_VALUE)
-                    {
-                        ((EditText) findViewById(R.id.MaxNumber_EditText)).setText(String.valueOf(preferences.getFloat("Max",100)));
-                        throw new Exception("Max number is bigger than " + Integer.MAX_VALUE);
-                    }
-                    if(Min > Integer.MAX_VALUE)
-                    {
-                        ((EditText) findViewById(R.id.MinNumber_EditText)).setText(String.valueOf(preferences.getFloat("Min",1)));
-                        throw new Exception("Min number is bigger than" + Integer.MAX_VALUE);
-                    }
-                    if(Max < Integer.MIN_VALUE)
-                    {
-                        ((EditText) findViewById(R.id.MaxNumber_EditText)).setText(String.valueOf(preferences.getFloat("Max",100)));
-                        throw new Exception("Max number is smaller than " + Integer.MIN_VALUE);
-                    }
-                    if(Min < Integer.MIN_VALUE)
-                    {
-                        ((EditText) findViewById(R.id.MinNumber_EditText)).setText(String.valueOf(preferences.getFloat("Min",1)));
-                        throw new Exception("Min number is smaller than " + Integer.MIN_VALUE);
-                    }
-                }catch (Exception ex){
-                   new AlertDialog.Builder(MainActivity.this)
-                           .setMessage(ex.toString().substring(ex.toString().indexOf(":") + 2))
-                           .setTitle("Error")
-                           .setPositiveButton("OK",null)
-                           .show();
-                    return;
-                }
-                //Float fix
-                ((EditText) findViewById(R.id.MinNumber_EditText)).setText(String.valueOf(Min));
-                ((EditText) findViewById(R.id.MaxNumber_EditText)).setText(String.valueOf(Max));
-                //Check multi random
+                String strMin = ((EditText) findViewById(R.id.MinNumber_EditText)).getText().toString(), strMax = ((EditText) findViewById(R.id.MaxNumber_EditText)).getText().toString();
                 if(preferences.getBoolean("multiRandom",false)){//Multi random
+                    // Values
+                    float Max;
+                    float Min;
+                    try {
+                        Max = Float.valueOf(strMax);
+                        Min = Float.valueOf(strMin);
+                        if(Max <= Min) throw new Exception("Min number is bigger or equal to Max number.");
+                        if(Max > Integer.MAX_VALUE)
+                            throw new Exception("Max number is bigger than " + Integer.MAX_VALUE);
+                        if(Min > Integer.MAX_VALUE)
+                            throw new Exception("Min number is bigger than" + Integer.MAX_VALUE);
+                        if(Max < Integer.MIN_VALUE)
+                            throw new Exception("Max number is smaller than " + Integer.MIN_VALUE);
+                        if(Min < Integer.MIN_VALUE)
+                            throw new Exception("Min number is smaller than " + Integer.MIN_VALUE);
+
+                    }catch (Exception ex){
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setMessage(ex.toString().substring(ex.toString().indexOf(":") + 2))
+                                .setTitle("Error")
+                                .setPositiveButton("OK",null)
+                                .show();
+                        return;
+                    }
+                    //Float fix
+                    ((EditText) findViewById(R.id.MinNumber_EditText)).setText(String.valueOf(Min));
+                    ((EditText) findViewById(R.id.MaxNumber_EditText)).setText(String.valueOf(Max));
+                    //Save
+                    editor.putString("MaxS",((EditText) findViewById(R.id.MaxNumber_EditText)).getText().toString());
+                    editor.putString("MinS",((EditText) findViewById(R.id.MinNumber_EditText)).getText().toString());
+                    editor.apply();
+                    //Check multi random
                     getNumberRandomDialog(Min,Max);
-                }else{//One random
-                    float rnd = random(Min,Max);
-                    if(isInteger(rnd)){
-                        ((EditText) findViewById(R.id.editText)).setText(String.valueOf(rnd).replace(".0",""));}
-                    else{
-                        ((EditText) findViewById(R.id.editText)).setText(String.valueOf(rnd));}
+                }else {//Single random
+                    // Values
+                    BigInteger Max, Min;
+                    if (((EditText) findViewById(R.id.MaxNumber_EditText)).getText().toString().contains(".") ||
+                            ((EditText) findViewById(R.id.MinNumber_EditText)).getText().toString().contains(".")) {//Decimal Numbers
+                        if(strMax.endsWith("."))
+                            strMax += "0";
+                        if(strMin.endsWith("."))
+                            strMin += "0";
+                        if(!strMax.contains("."))
+                            strMax += ".0";
+                        if(!strMin.contains("."))
+                            strMin += ".0";
+                        int decimalPlaces = Math.max(strMax.split("\\.")[1].length() , strMin.split("\\.")[1].length());
+                        while (strMax.split("\\.")[1].length() < decimalPlaces)
+                            strMax += "0";
+                        while (strMin.split("\\.")[1].length() < decimalPlaces)
+                            strMin += "0";
+                        //Now both numbers have same decimal digits
+                        strMax = strMax.replace(".","");
+                        strMin = strMin.replace(".","");
+                        try {
+                            Max = new BigInteger(strMax);
+                            strMax = null;
+                            Min = new BigInteger(strMin);
+                            strMin = null;
+                            if (Max.compareTo(Min) <= 0)
+                                throw new Exception("Min number is bigger or equal to Max number.");
+                        } catch (Exception ex) {
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setMessage(ex.toString().substring(ex.toString().indexOf(":") + 2))
+                                    .setTitle("Error")
+                                    .setPositiveButton("OK", null)
+                                    .show();
+                            return;
+                        }
+                        StringBuilder res = new StringBuilder(fullRandomBig(Min, Max).toString());
+                        boolean negative = false;
+                        if(res.charAt(0) == '-') {
+                            res = new StringBuilder(res.substring(1));
+                            negative = true;
+                        }
+                        if(res.length() <= decimalPlaces) {
+                            while (res.length() < decimalPlaces)
+                                res.insert(0, "0");
+                            res.insert(0, "0.");
+                        }else
+                            res.insert(res.length() - decimalPlaces , '.');
+                        if(negative)
+                            res.insert(0,'-');
+                        ((EditText) findViewById(R.id.editText)).setText(res);
+                    } else { //Integer numbers
+                        try {
+                            Max = new BigInteger(strMax);
+                            Min = new BigInteger(strMin);
+                            if (Max.compareTo(Min) <= 0)
+                                throw new Exception("Min number is bigger or equal to Max number.");
+                        } catch (Exception ex) {
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setMessage(ex.toString().substring(ex.toString().indexOf(":") + 2))
+                                    .setTitle("Error")
+                                    .setPositiveButton("OK", null)
+                                    .show();
+                            return;
+                        }
+                        ((EditText) findViewById(R.id.editText)).setText(fullRandomBig(Min,Max).toString());
+                    }
                 }
                 //Save Values
-                editor.putFloat("Max",Max);
-                editor.putFloat("Min",Min);
+                editor.putString("MaxS",((EditText) findViewById(R.id.MaxNumber_EditText)).getText().toString());
+                editor.putString("MinS",((EditText) findViewById(R.id.MinNumber_EditText)).getText().toString());
                 editor.apply();
                 //Auto Copy
                 if(((CheckBox) findViewById(R.id.checkBox)).isChecked())
@@ -174,29 +236,6 @@ public class MainActivity extends Activity {
         android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         android.content.ClipData clip = android.content.ClipData.newPlainText("Random Number", text);
         clipboard.setPrimaryClip(clip);
-    }
-    public float random(float Min,float Max){
-        float res;
-        //Check Decimal
-        if(Max % 1 != 0 || Min % 1 != 0){//Decimal
-            float Max1 = Max;
-            float Min1 = Min;
-            int MaxDecimal;
-            if(getDecimal(Min) > getDecimal(Max)){MaxDecimal = getDecimal(Min);}
-            else if(getDecimal(Min) < getDecimal(Max)){MaxDecimal = getDecimal(Max);}
-            else{MaxDecimal = getDecimal(Min);}
-            float toPow = ((float)Math.pow(10,MaxDecimal - 1));
-            while((MaxDecimal - 1) != 0){
-                MaxDecimal--;
-                Max1 *= 10;
-                Min1 *= 10;
-            }
-            int res1 = randInt((int) Min1,(int) Max1);
-            res = res1 / toPow;
-        }else{//Int
-            res = randInt((int) Min,(int) Max);
-        }
-        return res;
     }
     private void getNumberRandomDialog(float Min,float Max){
         //Final
@@ -267,8 +306,6 @@ public class MainActivity extends Activity {
         i.putExtras(b);
         MainActivity.this.startActivity(i);
     }
-    public int randInt(int min, int max) {return rand.nextInt((max - min) + 1) + min;}
-    private int getDecimal(float value){return String.valueOf(value).substring(String.valueOf(value).indexOf(".")).length();}
     private void changeFarsi(){
         ((Button) findViewById(R.id.Generate_BTN)).setText("بساز");
         ((Button) findViewById(R.id.Copy_BTN)).setText("کپی");
@@ -278,7 +315,32 @@ public class MainActivity extends Activity {
         ((CheckBox) findViewById(R.id.checkBox)).setText("کپی خودکار");
         ((CheckBox) findViewById(R.id.multiRandomCheckbox)).setText("ساخت چندین عدد تصادفی");
     }
-    public static boolean isInteger(float str) { return str % 1 == 0; }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mainmenu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.HelpBTN) {
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            AlertDialog.Builder ab = new AlertDialog.Builder(this);
+            if(preferences.getInt("Lang",0) == 1){
+                ab.setTitle("راهنما");
+                ab.setMessage("برای استفاده از بخش عدد تصادفی با رقم اعشار کافی است که بعد از عدد خود ممیز وارد کنید." + "\n" +  "مثلا اگر شما 1.00 را وارد کنید برنامه اعداد تصادفی شما را با دو رقم اعشار میسازد." + "\n\n"
+                + "برای اینکه از این قابلیت در قسمت چندین عدد تصادفی استفاده کنید، باید همین کار را بکنید با این تفاوت که رقم آخر عدد صفر نباشد. مثلا 4.0001");
+            }else{
+                ab.setTitle("Help");
+                ab.setMessage("To generate decimal numbers, add the decimal digits you want. For example if you use 0.32 the application will generate random numbers with 2 decimal points.\nIn multi number generator your last digit after decimal must not be zero. For example 3.00001 will generate numbers with 5 decimal digits.");
+            }
+            ab.setPositiveButton("OK",null);
+            ab.setIcon(R.drawable.ic_help_white_24dp);
+            ab.show();
+        }
+        super.onOptionsItemSelected(item);
+        return true;
+    }
     private static class CheckUpdates extends AsyncTask<Void,Void,Integer>{
         private WeakReference<MainActivity> activityReference;
         private int currentVersion;

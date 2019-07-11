@@ -35,6 +35,9 @@ import ir.tapsell.sdk.TapsellAdRequestListener;
 import ir.tapsell.sdk.TapsellAdRequestOptions;
 import ir.tapsell.sdk.TapsellShowOptions;
 
+import static com.hirbod.randomnumbergenerator.Functions.getDecimal;
+import static com.hirbod.randomnumbergenerator.Functions.isInteger;
+
 public class ShowNumsActivity extends Activity {
     private boolean Done = false;
     private String fileName = "";
@@ -121,7 +124,7 @@ public class ShowNumsActivity extends Activity {
     @Override
     public void onBackPressed() {
         g.cancel(true);
-        randoms = new ArrayList<>();
+        randoms = null;
         ((ListView) findViewById(R.id.listView)).setAdapter(null);
         //Running garbage collector to clear randoms array and ArrayAdapter
         System.gc();
@@ -423,7 +426,4 @@ public class ShowNumsActivity extends Activity {
         return res;
     }
     public int randInt(int min, int max) {return rand.nextInt((max - min) + 1) + min;}
-    private int getDecimal(float value){return String.valueOf(value).substring(String.valueOf(value).indexOf(".")).length();}
-    public static boolean isInteger(float str) {return str % 1 == 0;}
-    public static boolean isInteger(double str) {return str % 1 == 0;}
 }
