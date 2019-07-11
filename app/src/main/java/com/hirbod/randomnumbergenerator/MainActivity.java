@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +28,6 @@ import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.math.BigInteger;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Random;
 
 import static com.hirbod.randomnumbergenerator.Functions.fullRandomBig;
 
