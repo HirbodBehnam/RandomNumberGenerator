@@ -70,7 +70,8 @@ public class ShowNumsActivity extends Activity {
 
                 @Override
                 public void onAdAvailable(TapsellAd tapsellAd) {
-                    tapsellAd.show(ShowNumsActivity.this,new TapsellShowOptions());
+                    if(new Random().nextBoolean())
+                        tapsellAd.show(ShowNumsActivity.this,new TapsellShowOptions());
                 }
 
                 @Override
