@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static com.hirbod.randomnumbergenerator.Functions.SetClipboard;
 import static com.hirbod.randomnumbergenerator.Functions.fullRandomBig;
@@ -52,6 +53,8 @@ public class MultiStepGeneratorActivity extends Activity {
         ((EditText) findViewById(R.id.MaxNumber_EditText)).setText(preferences.getString("MaxSM","100"));
         ((EditText) findViewById(R.id.MinNumber_EditText)).setText(preferences.getString("MinSM","1"));
         //Load ads
+        if(new Random().nextBoolean())
+            AD.ShowFullScreenAD(this);
         AD.LoadBanner(this);
         //If language is persian, change the UIs
         if(preferences.getInt("Lang",0) == 1)
