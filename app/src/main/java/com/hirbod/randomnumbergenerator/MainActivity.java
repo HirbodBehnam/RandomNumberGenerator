@@ -235,6 +235,22 @@ public class MainActivity extends Activity {
         }catch (PackageManager.NameNotFoundException ex){
             ex.printStackTrace();
         }
+        //Check first run
+        if(preferences.getBoolean("FirstRun",true)){
+            AlertDialog.Builder b = new AlertDialog.Builder(this);
+            b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    editor.putBoolean("FirstRun",false);
+                    editor.apply();
+                }
+            });
+            b.setTitle("Welcome");
+            b.setMessage("Welcome the the Random Number Generator application. You can stay here to create single random numbers. Add a decimal digit after the number " +
+                    "to generate decimal numbers. Also from the top right menu you can roll a dice, draw a card, flip a coin or generate and log random numbers.\nAlso " +
+                    "you can view help at that menu.\nYou can change the language to Farsi in the settings.");
+            b.show();
+        }
     }
     private void rollDice(){
         AlertDialog.Builder b = new AlertDialog.Builder(this);
