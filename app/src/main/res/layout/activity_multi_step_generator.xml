@@ -8,29 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.hirbod.randomnumbergenerator.MainActivity">
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/generate"
-        android:id="@+id/Generate_BTN"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/Generate_BTN"
-        android:layout_toStartOf="@+id/Generate_BTN" />
-
+    tools:context=".MultiStepGeneratorActivity">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,8 +17,7 @@
         android:text="@string/MaxNum"
         android:id="@+id/textView2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/Generate_BTN" />
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:inputType="numberDecimal|numberSigned"
@@ -52,7 +29,9 @@
         android:layout_toRightOf="@+id/textView2"
         android:layout_alignRight="@+id/Generate_BTN"
         android:layout_alignEnd="@+id/Generate_BTN"
-        android:layout_toEndOf="@+id/textView2" />
+        android:layout_toEndOf="@+id/textView2"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -73,67 +52,54 @@
         android:id="@+id/MinNumber_EditText"
         android:layout_alignTop="@+id/textView3"
         android:layout_toRightOf="@+id/textView3"
-        android:layout_alignRight="@+id/Generate_BTN"
-        android:layout_alignEnd="@+id/Generate_BTN"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/textView3" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/AutoCopy"
-        android:id="@+id/checkBox"
-        android:layout_below="@+id/MinNumber_EditText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:checked="true" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Copy"
-        android:id="@+id/Copy_BTN"
-        android:layout_alignTop="@+id/checkBox"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-    <CheckBox
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Random Multi Numbers"
-        android:id="@+id/multiRandomCheckbox"
-        android:layout_below="@+id/Copy_BTN"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <ImageButton
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/multiplyHelp"
-        android:contentDescription="Help of Multi Random Numbers"
-        android:src="@drawable/ic_help_white_24dp"
-        android:background="#00000000"
-        android:layout_below="@+id/Copy_BTN"
-        android:layout_toRightOf="@+id/multiRandomCheckbox"
-        android:layout_toEndOf="@+id/multiRandomCheckbox" />
+        android:text="Generate"
+        android:layout_below="@+id/MinNumber_EditText"
+        android:id="@+id/Generate_BTN"
+        android:layout_centerHorizontal="true"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="By Hirbod Behnam"
-        android:id="@+id/textView"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Average: "
+        android:id="@+id/AverageView"
         android:layout_above="@+id/BottomOfPageLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Settings"
-        android:id="@+id/SettingsBTN"
-        android:layout_above="@+id/BottomOfPageLayout"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Sum: "
+        android:id="@+id/SumView"
+        android:layout_above="@+id/AverageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Generate_BTN"
+        android:id="@+id/listView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/SumView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=" :Count"
+        android:id="@+id/CountView"
+        android:layout_below="@+id/listView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
 
     <LinearLayout
         android:orientation="horizontal"
@@ -151,5 +117,4 @@
             android:background="@android:color/transparent"
             android:layout_marginTop="2dp"/>
     </LinearLayout>
-
 </RelativeLayout>

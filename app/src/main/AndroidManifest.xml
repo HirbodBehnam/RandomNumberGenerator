@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.hirbod.randomnumbergenerator"
     android:installLocation="auto">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".AppClass"
         android:allowBackup="true"
@@ -22,8 +24,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".ShowNumsActivity"/>
-        <activity android:name="ir.tapsell.sdk.TapsellAdActivity"
+        <activity android:name=".ShowNumsActivity" />
+        <activity android:name=".MultiStepGeneratorActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="ir.tapsell.sdk.TapsellAdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
     </application>
 

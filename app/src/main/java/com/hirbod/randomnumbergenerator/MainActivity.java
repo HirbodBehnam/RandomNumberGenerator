@@ -29,6 +29,7 @@ import java.lang.ref.WeakReference;
 import java.math.BigInteger;
 import java.net.URL;
 
+import static com.hirbod.randomnumbergenerator.Functions.SetClipboard;
 import static com.hirbod.randomnumbergenerator.Functions.fullRandomBig;
 
 public class MainActivity extends Activity {
@@ -229,11 +230,6 @@ public class MainActivity extends Activity {
             ex.printStackTrace();
         }
     }
-    public static void SetClipboard(Context context,String text){
-        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        android.content.ClipData clip = android.content.ClipData.newPlainText("Random Number", text);
-        clipboard.setPrimaryClip(clip);
-    }
     private void getNumberRandomDialog(float Min,float Max){
         //Final
         final Context c = this;
@@ -334,7 +330,8 @@ public class MainActivity extends Activity {
             ab.setPositiveButton("OK",null);
             ab.setIcon(R.drawable.ic_help_white_24dp);
             ab.show();
-        }
+        }else if(item.getItemId() == R.id.SequenceGenerator)
+            startActivity(new Intent(getApplicationContext(), MultiStepGeneratorActivity.class));
         super.onOptionsItemSelected(item);
         return true;
     }

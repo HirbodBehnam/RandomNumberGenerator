@@ -1,16 +1,12 @@
 package com.hirbod.randomnumbergenerator;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -104,7 +100,7 @@ public class ShowNumsActivity extends Activity {
         FMax = b.getFloat("Max");
         FMin = b.getFloat("Min");
         resDialogMulti = b.getInt("ToCreate");
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.activity_listview, new String[]{"Generating Numbers...","Please Wait..."});
+        ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"Generating Numbers...","Please Wait..."});
         ((ListView) findViewById(R.id.listView)).setAdapter(adapter);
         //Reset every thing
         Done = false;
@@ -158,7 +154,7 @@ public class ShowNumsActivity extends Activity {
         return true;
     }
     private void SAVE(){
-        if (permission()) {
+        if (Functions.permission(this)) {
             if (!Done)
                 Toast.makeText(this, "Wait to create numbers...", Toast.LENGTH_SHORT).show();
             else {
@@ -188,55 +184,7 @@ public class ShowNumsActivity extends Activity {
             }
         }
     }
-    private boolean permission(){
-        if(Build.VERSION.SDK_INT >= 23){
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-                    AlertDialog.Builder mad = new AlertDialog.Builder(this);
-                    if(preferences.getInt("Lang",0) == 0) {
-                        mad.setMessage("This permission is needed to save this list.");
-                        mad.setTitle("Error");
-                        mad.setNegativeButton("OK",null);
-                        mad.setPositiveButton("Go To Settings", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startApplicationDetailsActivity();
-                            }
-                        });
-                        mad.setNeutralButton("Request Again", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-                            }
-                        });
-                    }else{
-                        mad.setMessage("این دسترسی برای ذخیره کردن این لیست نیاز است.");
-                        mad.setTitle("خطا");
-                        mad.setNegativeButton("باشه",null);
-                        mad.setPositiveButton("برو به تنظیمات", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startApplicationDetailsActivity();
-                            }
-                        });
-                        mad.setNeutralButton("درخواست مجدد", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-                            }
-                        });
-                    }
-                    mad.show();
-                    return false;
-                } else {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         // If request is cancelled, the result arrays are empty.
@@ -251,7 +199,7 @@ public class ShowNumsActivity extends Activity {
                     mad.setPositiveButton("Go To Settings", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            startApplicationDetailsActivity();
+                            Functions.startApplicationDetailsActivity(ShowNumsActivity.this);
                         }
                     });
                 } else {
@@ -261,7 +209,7 @@ public class ShowNumsActivity extends Activity {
                     mad.setPositiveButton("برو به تنظیمات", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            startApplicationDetailsActivity();
+                           Functions.startApplicationDetailsActivity(ShowNumsActivity.this);
                         }
                     });
                 }
@@ -269,15 +217,6 @@ public class ShowNumsActivity extends Activity {
             }else{
                 SAVE();
             }
-        }
-    }
-    private void startApplicationDetailsActivity() {
-        try {
-            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.setData(Uri.parse("package:" + "com.hirbod.randomnumbergenerator"));
-            startActivity(intent);
-        }catch (Exception e){
-            e.printStackTrace();
         }
     }
     private class Writer extends AsyncTask<Void,Void,String>{
@@ -296,7 +235,10 @@ public class ShowNumsActivity extends Activity {
             sb.append(" To ");
             sb.append(FMax);
             sb.append(" :\n\n");
-            for(String i : randoms) sb.append(i);
+            for(String i : randoms) {
+                sb.append(i);
+                sb.append("\n");
+            }
             sb.append("=================\n");
             sb.append("Sum: ");
             sb.append(summed);
@@ -396,7 +338,7 @@ public class ShowNumsActivity extends Activity {
                         ((TextView) findViewById(R.id.maxView)).setText("کمترین عدد: " + min);
                         ((TextView) findViewById(R.id.AverageView)).setText("میانگین: " + ave);
                     }
-                    ArrayAdapter adapter = new ArrayAdapter<>(ShowNumsActivity.this,R.layout.activity_listview, randoms.toArray());
+                    ArrayAdapter adapter = new ArrayAdapter<>(ShowNumsActivity.this,android.R.layout.simple_list_item_1, randoms.toArray());
                     ((ListView) findViewById(R.id.listView)).setAdapter(adapter);
                 }
             });
