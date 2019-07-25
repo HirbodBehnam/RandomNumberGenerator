@@ -47,6 +47,9 @@ public class MainActivity extends Activity {
         editor.putBoolean("multiRandom",preferences.getBoolean("multiRandom",false));
         editor.putInt("Lang",preferences.getInt("Lang",0));
         editor.apply();
+        //Ads
+        AD.InitAd(this);
+        AD.LoadBanner(this);
         //Set lang
         if(preferences.getInt("Lang",0) == 1)
             changeFarsi();

@@ -43,7 +43,7 @@ public class MultiStepGeneratorActivity extends Activity {
         setContentView(R.layout.activity_multi_step_generator);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Sequential Random Generator");
-
+        //Load last used numbers
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = preferences.edit();
         editor.putString("MaxSM",preferences.getString("MaxSM","100"));
@@ -51,15 +51,17 @@ public class MultiStepGeneratorActivity extends Activity {
         editor.apply();
         ((EditText) findViewById(R.id.MaxNumber_EditText)).setText(preferences.getString("MaxSM","100"));
         ((EditText) findViewById(R.id.MinNumber_EditText)).setText(preferences.getString("MinSM","1"));
-
+        //Load ads
+        AD.LoadBanner(this);
+        //If language is persian, change the UIs
         if(preferences.getInt("Lang",0) == 1)
             changeFarsi();
-
+        //Fire up the array adaptor for listview
         ArrayList<String> listOfNums = new ArrayList<>();
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listOfNums);
         arrayAdapter.setNotifyOnChange(true);
         ((ListView)findViewById(R.id.listView)).setAdapter(arrayAdapter);
-
+        //Set precision of the sum to 15 digits
         Sum = Sum.setScale(15, RoundingMode.HALF_EVEN);
 
         findViewById(R.id.Generate_BTN).setOnClickListener(new View.OnClickListener() {
@@ -142,7 +144,7 @@ public class MultiStepGeneratorActivity extends Activity {
                 editor.apply();
             }
         });
-
+        //Bring up the menu when user holds the elements on the list
         ((ListView)findViewById(R.id.listView)).setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -152,11 +154,10 @@ public class MultiStepGeneratorActivity extends Activity {
                 builder.setItems(new String[]{"Copy","Delete"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(which == 0) {
+                        if(which == 0) { //Copy
                             SetClipboard(MultiStepGeneratorActivity.this, number);
                             Toast.makeText(MultiStepGeneratorActivity.this,"Copied "+ number,Toast.LENGTH_SHORT).show();
-                        }
-                        else{
+                        } else{//Delete
                             arrayAdapter.remove(number);
                             updateAverage(number,true);
                         }

@@ -29,6 +29,8 @@ public class SettingsActivity extends Activity {
         final SharedPreferences.Editor editor = preferences.edit();
         if(preferences.getInt("Lang",0) == 1)
             changeFarsi();
+        //AD
+        AD.LoadBanner(this);
         //Spinner
         Spinner spinner = findViewById(R.id.LangSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.lang_array, android.R.layout.simple_spinner_item);
