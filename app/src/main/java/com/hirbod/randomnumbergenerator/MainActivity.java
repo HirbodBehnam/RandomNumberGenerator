@@ -28,18 +28,20 @@ import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.math.BigInteger;
 import java.net.URL;
+import java.util.Random;
 
 import static com.hirbod.randomnumbergenerator.Functions.SetClipboard;
 import static com.hirbod.randomnumbergenerator.Functions.fullRandomBig;
 
 public class MainActivity extends Activity {
     static int resDialogMulti = -1;
+    private SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Max and min holder
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = preferences.edit();
         editor.putString("MaxS",preferences.getString("MaxS","100"));
         editor.putString("MinS",preferences.getString("MinS","1"));
@@ -233,6 +235,126 @@ public class MainActivity extends Activity {
             ex.printStackTrace();
         }
     }
+    private void rollDice(){
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+
+        if(preferences.getInt("Lang",0) == 1){
+            b
+                    .setPositiveButton("دوباره بنداز", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            rollDice();
+                        }
+                    })
+                    .setNegativeButton("اوکی",null)
+                    .setTitle("تاس بنداز")
+                    .setMessage((new Random().nextInt(6) + 1) + " اومد!");
+        }else{
+            b
+                    .setPositiveButton("Roll Again", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            rollDice();
+                        }
+                    })
+                    .setNegativeButton("OK",null)
+                    .setTitle("Roll a Dice")
+                    .setMessage("Rolled a dice and it was " + (new Random().nextInt(6) + 1));
+        }
+        b.show();
+    }
+    private void flipCoin(){
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        if(preferences.getInt("Lang",0) == 1){
+            b
+                    .setPositiveButton("دوباره بنداز", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            flipCoin();
+                        }
+                    })
+                    .setNegativeButton("اوکی",null)
+                    .setTitle("شیر یا خط")
+                    .setMessage((new Random().nextBoolean() ? "شیر" : "خط") + " اومد!");
+        }else{
+         b
+                 .setPositiveButton("Flip Again", new DialogInterface.OnClickListener() {
+                     @Override
+                     public void onClick(DialogInterface dialog, int which) {
+                         flipCoin();
+                     }
+                 })
+                 .setNegativeButton("OK",null)
+                 .setTitle("Flip a Coin")
+                 .setMessage("Flipped a coin and it was " + (new Random().nextBoolean() ? "Heads" : "Tails"));
+        }
+        b.show();
+    }
+    private void drawCard(){
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        if(preferences.getInt("Lang",0) == 1){
+            String[] suits = {"گیشنیز","پیک","خشت","دل"};
+            String Number;
+            int i = new Random().nextInt(13) + 1;
+            switch (i){
+                case 1:
+                    Number = "آس";
+                    break;
+                case 11:
+                    Number = "سرباز";
+                    break;
+                case 12:
+                    Number = "بی بی";
+                    break;
+                case 13:
+                    Number = "شاه";
+                    break;
+                default:
+                    Number = "" + i;
+            }
+            b
+                    .setPositiveButton("دوباره بنداز", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            drawCard();
+                        }
+                    })
+                    .setNegativeButton("اوکی",null)
+                    .setTitle("ورق بازی")
+                    .setMessage(Number + "ِ " + suits[new Random().nextInt(4)] + " اومد!");
+        }else{
+            String[] suits = {"Clovers","Spades","Diamonds","Hearts"};
+            String Number;
+            int i = new Random().nextInt(13) + 1;
+            switch (i){
+                case 1:
+                    Number = "Ace";
+                    break;
+                case 11:
+                    Number = "Jack";
+                    break;
+                case 12:
+                    Number = "Queen";
+                    break;
+                case 13:
+                    Number = "King";
+                    break;
+                default:
+                    Number = "" + i;
+            }
+            b
+                    .setPositiveButton("Draw Again", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            drawCard();
+                        }
+                    })
+                    .setNegativeButton("OK",null)
+                    .setTitle("Draw a Card")
+                    .setMessage("It's " + Number + " of " + suits[new Random().nextInt(4)]);
+        }
+        b.show();
+    }
     private void getNumberRandomDialog(float Min,float Max){
         //Final
         final Context c = this;
@@ -319,22 +441,35 @@ public class MainActivity extends Activity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.HelpBTN) {
-            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            AlertDialog.Builder ab = new AlertDialog.Builder(this);
-            if(preferences.getInt("Lang",0) == 1){
-                ab.setTitle("راهنما");
-                ab.setMessage("برای استفاده از بخش عدد تصادفی با رقم اعشار کافی است که بعد از عدد خود ممیز وارد کنید." + "\n" +  "مثلا اگر شما 1.00 را وارد کنید برنامه اعداد تصادفی شما را با دو رقم اعشار میسازد." + "\n\n"
-                + "برای اینکه از این قابلیت در قسمت چندین عدد تصادفی استفاده کنید، باید همین کار را بکنید با این تفاوت که رقم آخر عدد صفر نباشد. مثلا 4.0001");
-            }else{
-                ab.setTitle("Help");
-                ab.setMessage("To generate decimal numbers, add the decimal digits you want. For example if you use 0.32 the application will generate random numbers with 2 decimal points.\nIn multi number generator your last digit after decimal must not be zero. For example 3.00001 will generate numbers with 5 decimal digits.");
-            }
-            ab.setPositiveButton("OK",null);
-            ab.setIcon(R.drawable.ic_help_white_24dp);
-            ab.show();
-        }else if(item.getItemId() == R.id.SequenceGenerator)
-            startActivity(new Intent(getApplicationContext(), MultiStepGeneratorActivity.class));
+        switch (item.getItemId()){
+            case R.id.HelpBTN:
+                final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                AlertDialog.Builder ab = new AlertDialog.Builder(this);
+                if(preferences.getInt("Lang",0) == 1){
+                    ab.setTitle("راهنما");
+                    ab.setMessage("برای استفاده از بخش عدد تصادفی با رقم اعشار کافی است که بعد از عدد خود ممیز وارد کنید." + "\n" +  "مثلا اگر شما 1.00 را وارد کنید برنامه اعداد تصادفی شما را با دو رقم اعشار میسازد." + "\n\n"
+                            + "برای اینکه از این قابلیت در قسمت چندین عدد تصادفی استفاده کنید، باید همین کار را بکنید با این تفاوت که رقم آخر عدد صفر نباشد. مثلا 4.0001");
+                }else{
+                    ab.setTitle("Help");
+                    ab.setMessage("To generate decimal numbers, add the decimal digits you want. For example if you use 0.32 the application will generate random numbers with 2 decimal points.\nIn multi number generator your last digit after decimal must not be zero. For example 3.00001 will generate numbers with 5 decimal digits.");
+                }
+                ab.setPositiveButton("OK",null);
+                ab.setIcon(R.drawable.ic_help_white_24dp);
+                ab.show();
+                break;
+            case R.id.SequenceGenerator:
+                startActivity(new Intent(getApplicationContext(), MultiStepGeneratorActivity.class));
+                break;
+            case R.id.FlipBTN:
+                flipCoin();
+                break;
+            case R.id.DrawBTN:
+                drawCard();
+                break;
+            case R.id.DiceBTN:
+                rollDice();
+                break;
+        }
         super.onOptionsItemSelected(item);
         return true;
     }
