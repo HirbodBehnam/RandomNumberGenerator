@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
         editor.apply();
         //Ads
         AD.InitAd(this);
+        AD.LoadFullScreenAd(this);
         AD.LoadBanner(this);
         //Set lang
         if(preferences.getInt("Lang",0) == 1)

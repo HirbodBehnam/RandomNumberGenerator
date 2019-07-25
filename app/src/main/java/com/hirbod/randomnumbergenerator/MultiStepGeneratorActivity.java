@@ -342,6 +342,8 @@ public class MultiStepGeneratorActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.SaveBTN)
             SAVE();
+        else
+            onBackPressed();
         return true;
     }
     @Override
