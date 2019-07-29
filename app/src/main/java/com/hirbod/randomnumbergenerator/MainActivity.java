@@ -381,7 +381,7 @@ public class MainActivity extends Activity {
         resDialogMulti = -1;
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter numbers to generate:");
+        builder.setTitle("Enter amount of numbers to generate:");
         if(preferences.getInt("Lang",0) == 1){builder.setTitle("لطفا تعداد اعداد را وارد کنید.");}
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -399,7 +399,7 @@ public class MainActivity extends Activity {
                             builder.setMessage("شما نمی توانید عددی بیشتر از پنج میلیون وارد کنید.");
                         }else{
                             builder.setTitle("Error");
-                            builder.setMessage("You cannot enter number more than 5000000.");
+                            builder.setMessage("You cannot generate more than 5000000 numbers.");
                         }
                         builder.setPositiveButton("OK",null);
                         builder.show();
