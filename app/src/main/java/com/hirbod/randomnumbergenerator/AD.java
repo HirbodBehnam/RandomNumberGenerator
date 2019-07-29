@@ -43,8 +43,7 @@ class AD {
     }
     static void ShowFullScreenAD(final Activity activity){
         if (mInterstitialAd.isLoaded())
-            if(new Random().nextBoolean())
-                mInterstitialAd.show();
+            mInterstitialAd.show();
     }
     static void LoadBanner(final Activity activity){
         AdRequest adRequest = new AdRequest.Builder().build();
