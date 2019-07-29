@@ -504,7 +504,7 @@ public class MainActivity extends Activity {
             int webVersion = Integer.MIN_VALUE;
             try
             {
-                URL url = new URL("https://raw.githubusercontent.com/HirbodBehnam/RandomNumberGenerator/master/app/build.gradle");
+                URL url = new URL("https://raw.githubusercontent.com/HirbodBehnam/RandomNumberGenerator/google-play/app/build.gradle");
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
                 String line;
                 while ((line = bufferedReader.readLine()) != null){
@@ -539,7 +539,7 @@ public class MainActivity extends Activity {
                     .setPositiveButton(preferences.getInt("Lang",0) == 1 ? "آپدیت" :"Update", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cafebazaar.ir/app/com.hirbod.randomnumbergenerator/"));
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.hirbod.randomnumbergenerator"));
                             activity.startActivity(browserIntent);
                         }
                     })

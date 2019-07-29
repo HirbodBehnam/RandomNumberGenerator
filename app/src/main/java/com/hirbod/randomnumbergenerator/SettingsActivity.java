@@ -1,12 +1,12 @@
 package com.hirbod.randomnumbergenerator;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -56,26 +56,16 @@ public class SettingsActivity extends Activity {
         findViewById(R.id.voteBTN).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_EDIT);
-                        intent.setData(Uri.parse("bazaar://details?id=com.hirbod.randomnumbergenerator"));
-                        intent.setPackage("com.farsitel.bazaar");
-                        startActivity(intent);
-                    }catch (Exception ex){
-                        AlertDialog.Builder mad = new AlertDialog.Builder(SettingsActivity.this);
-                                mad
-                                .setPositiveButton("Install", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cafebazaar.ir/install/"));
-                                        startActivity(browserIntent);
-                                    }
-                                })
-                                .setNegativeButton("Close",null);
-                        if(preferences.getInt("Lang",0) == 0){mad.setMessage("Please install bazaar to rate!").setTitle("Error");}
-                        else{mad.setMessage("لطفا بازار را نصب کنید.").setTitle("خطا");}
-						mad.show();
-                    }
+                try
+                {
+                    Intent rateIntent = rateIntentForUrl("market://details");
+                    startActivity(rateIntent);
+                }
+                catch (ActivityNotFoundException e)
+                {
+                    Intent rateIntent = rateIntentForUrl("https://play.google.com/store/apps/details");
+                    startActivity(rateIntent);
+                }
             }
         });
         //GitHub
@@ -90,15 +80,8 @@ public class SettingsActivity extends Activity {
         findViewById(R.id.otherAppsBTN).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("bazaar://collection?slug=by_author&aid=" + "hirbod_behnam"));
-                    intent.setPackage("com.farsitel.bazaar");
-                    startActivity(intent);
-                }catch (Exception ex){
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://cafebazaar.ir/developer/hirbod_behnam"));
-                    startActivity(browserIntent);
-                }
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=Hirbod+Behnam"));
+                startActivity(browserIntent);
             }
         });
         //Show build
@@ -116,6 +99,21 @@ public class SettingsActivity extends Activity {
         });
     }
 
+    private Intent rateIntentForUrl(String url)
+    {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s?id=%s", url, getPackageName())));
+        int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
+        if (Build.VERSION.SDK_INT >= 21)
+        {
+            flags |= Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
+        }
+        else
+        {
+            flags |= Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET;
+        }
+        intent.addFlags(flags);
+        return intent;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){

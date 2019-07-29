@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 28
         versionCode 26
-        versionName "1.5.0"
+        versionName "1.5.0-GP"
     }
     buildTypes {
         release {
@@ -23,5 +23,5 @@ android {
     }
 }
 dependencies {
-    implementation 'ir.tapsell.sdk:tapsell-sdk-android:4.3.2'
+    implementation 'com.google.android.gms:play-services-ads:18.1.1'
 }
