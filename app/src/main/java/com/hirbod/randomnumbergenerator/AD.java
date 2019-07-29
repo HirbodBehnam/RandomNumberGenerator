@@ -1,6 +1,7 @@
 package com.hirbod.randomnumbergenerator;
 
 import android.app.Activity;
+import android.widget.LinearLayout;
 
 import ir.tapsell.sdk.Tapsell;
 import ir.tapsell.sdk.TapsellAd;
@@ -8,6 +9,8 @@ import ir.tapsell.sdk.TapsellAdRequestListener;
 import ir.tapsell.sdk.TapsellAdRequestOptions;
 import ir.tapsell.sdk.TapsellAdShowListener;
 import ir.tapsell.sdk.TapsellShowOptions;
+import ir.tapsell.sdk.bannerads.TapsellBannerType;
+import ir.tapsell.sdk.bannerads.TapsellBannerView;
 
 class AD {
     private static TapsellAd tapsellAd = null;
@@ -61,6 +64,8 @@ class AD {
             });
     }
     static void LoadBanner(final Activity activity){
-
+        TapsellBannerView banner = new TapsellBannerView(activity, TapsellBannerType.BANNER_320x50,"5cfd01d63ea54800014dd610");
+        banner.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        ((LinearLayout) activity.findViewById(R.id.BottomOfPageLayout)).addView(banner);
     }
 }
