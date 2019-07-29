@@ -27,9 +27,9 @@
         <activity android:name=".ShowNumsActivity" />
         <activity android:name=".MultiStepGeneratorActivity"
             android:screenOrientation="portrait"/>
-        <activity
-            android:name="ir.tapsell.sdk.TapsellAdActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-4493333048205720~5460376984"/>
     </application>
 
 </manifest>
