@@ -184,7 +184,7 @@ public class MultiStepGeneratorActivity extends Activity {
             ((TextView) findViewById(R.id.CountView)).setText(" :Count");
             return;
         }
-        ((TextView) findViewById(R.id.SumView)).setText("Sum: " + num.toString());
+        ((TextView) findViewById(R.id.SumView)).setText("Sum: " + Sum.toString());
         ((TextView) findViewById(R.id.AverageView)).setText("Average: " + Sum.divide(BigDecimal.valueOf(count) ,15,RoundingMode.HALF_EVEN).toString());
         ((TextView) findViewById(R.id.CountView)).setText(count + " :Count");
     }
