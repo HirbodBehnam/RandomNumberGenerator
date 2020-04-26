@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RandomNumberGenerator.iml" filepath="$PROJECT_DIR$/RandomNumberGenerator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/adad-sdk-ad-5.1.1/adad-sdk-ad-5.1.1.iml" filepath="$PROJECT_DIR$/adad-sdk-ad-5.1.1/adad-sdk-ad-5.1.1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/adad-sdk-banner-5.1.1/adad-sdk-banner-5.1.1.iml" filepath="$PROJECT_DIR$/adad-sdk-banner-5.1.1/adad-sdk-banner-5.1.1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/adad-sdk-core-5.1.1/adad-sdk-core-5.1.1.iml" filepath="$PROJECT_DIR$/adad-sdk-core-5.1.1/adad-sdk-core-5.1.1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RandomNumberGenerator.iml" filepath="$PROJECT_DIR$/RandomNumberGenerator.iml" group="RandomNumberGenerator" />
+      <module fileurl="file://$PROJECT_DIR$/adad-sdk-ad-5.1.1/adad-sdk-ad-5.1.1.iml" filepath="$PROJECT_DIR$/adad-sdk-ad-5.1.1/adad-sdk-ad-5.1.1.iml" group="RandomNumberGenerator/adad-sdk-ad-5.1.1" />
+      <module fileurl="file://$PROJECT_DIR$/adad-sdk-banner-5.1.1/adad-sdk-banner-5.1.1.iml" filepath="$PROJECT_DIR$/adad-sdk-banner-5.1.1/adad-sdk-banner-5.1.1.iml" group="RandomNumberGenerator/adad-sdk-banner-5.1.1" />
+      <module fileurl="file://$PROJECT_DIR$/adad-sdk-core-5.1.1/adad-sdk-core-5.1.1.iml" filepath="$PROJECT_DIR$/adad-sdk-core-5.1.1/adad-sdk-core-5.1.1.iml" group="RandomNumberGenerator/adad-sdk-core-5.1.1" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="RandomNumberGenerator/app" />
     </modules>
   </component>
 </project>
