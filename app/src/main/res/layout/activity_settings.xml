@@ -26,14 +26,20 @@
         android:layout_below="@+id/textView4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-    <Button
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Use Secure Random"
+        android:layout_below="@+id/LangSpinner"
         android:layout_marginTop="20dp"
+        android:id="@+id/SecureRandomCheckbox"/>
+    <Button
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vote Application"
         android:id="@+id/voteBTN"
-        android:layout_below="@+id/LangSpinner"
+        android:layout_below="@+id/SecureRandomCheckbox"
         android:layout_centerHorizontal="true" />
     <Button
         android:layout_width="wrap_content"

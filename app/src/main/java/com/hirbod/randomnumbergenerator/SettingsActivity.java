@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -51,6 +53,16 @@ public class SettingsActivity extends Activity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
+        });
+        // Secure Random
+        ((CheckBox)findViewById(R.id.SecureRandomCheckbox)).setChecked(preferences.getBoolean("UseSecureRandom",false));
+        ((CheckBox)findViewById(R.id.SecureRandomCheckbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                editor.putBoolean("UseSecureRandom",isChecked);
+                editor.apply();
+                InnerRandom.UseSecureRandom = isChecked;
+            }
         });
         //Vote
         findViewById(R.id.voteBTN).setOnClickListener(new View.OnClickListener() {

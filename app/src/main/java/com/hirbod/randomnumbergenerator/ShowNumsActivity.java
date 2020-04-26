@@ -23,7 +23,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Random;
 
 
 import static com.hirbod.randomnumbergenerator.Functions.getDecimal;
@@ -43,14 +42,13 @@ public class ShowNumsActivity extends Activity {
     private SharedPreferences preferences;
     private Generator g = new Generator();
     private ProgressDialog pd;
-    Random rand = new Random();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_nums);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if(new Random().nextBoolean())
+        if(InnerRandom.nextBoolean())
             AD.ShowFullScreenAD(this);
         AD.LoadBanner(this);
 
@@ -72,7 +70,6 @@ public class ShowNumsActivity extends Activity {
         //Reset every thing
         Done = false;
         summed = 0;
-        rand = new Random();
         //Running garbage collector to clear randoms array and ArrayAdapter
         System.gc();
         System.runFinalization();
@@ -335,5 +332,8 @@ public class ShowNumsActivity extends Activity {
         }
         return res;
     }
-    public int randInt(int min, int max) {return rand.nextInt((max - min) + 1) + min;}
+    public int randInt(int min, int max)
+    {
+        return InnerRandom.nextInt((max - min) + 1) + min;
+    }
 }

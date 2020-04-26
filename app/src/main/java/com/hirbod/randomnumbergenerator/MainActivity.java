@@ -28,7 +28,6 @@ import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.math.BigInteger;
 import java.net.URL;
-import java.util.Random;
 
 import static com.hirbod.randomnumbergenerator.Functions.SetClipboard;
 import static com.hirbod.randomnumbergenerator.Functions.fullRandomBig;
@@ -56,6 +55,8 @@ public class MainActivity extends Activity {
         //Set lang
         if(preferences.getInt("Lang",0) == 1)
             changeFarsi();
+        // Set secure random
+        InnerRandom.UseSecureRandom = preferences.getBoolean("UseSecureRandom",false);
         //Disable edits on main text box
         findViewById(R.id.editText).setFocusable(false);
         //Auto copy
@@ -122,8 +123,8 @@ public class MainActivity extends Activity {
                     float Max;
                     float Min;
                     try {
-                        Max = Float.valueOf(strMax);
-                        Min = Float.valueOf(strMin);
+                        Max = Float.parseFloat(strMax);
+                        Min = Float.parseFloat(strMin);
                         if(Max <= Min) throw new Exception("Min number is bigger or equal to Max number.");
                         if(Max > Integer.MAX_VALUE)
                             throw new Exception("Max number is bigger than " + Integer.MAX_VALUE);
@@ -265,7 +266,7 @@ public class MainActivity extends Activity {
                     })
                     .setNegativeButton("اوکی",null)
                     .setTitle("تاس بنداز")
-                    .setMessage((new Random().nextInt(6) + 1) + " اومد!");
+                    .setMessage((InnerRandom.nextInt(6) + 1) + " اومد!");
         }else{
             b
                     .setPositiveButton("Roll Again", new DialogInterface.OnClickListener() {
@@ -276,7 +277,7 @@ public class MainActivity extends Activity {
                     })
                     .setNegativeButton("OK",null)
                     .setTitle("Roll a Dice")
-                    .setMessage("Rolled a dice and it was " + (new Random().nextInt(6) + 1));
+                    .setMessage("Rolled a dice and it was " + (InnerRandom.nextInt(6) + 1));
         }
         b.show();
     }
@@ -292,7 +293,7 @@ public class MainActivity extends Activity {
                     })
                     .setNegativeButton("اوکی",null)
                     .setTitle("شیر یا خط")
-                    .setMessage((new Random().nextBoolean() ? "شیر" : "خط") + " اومد!");
+                    .setMessage((InnerRandom.nextBoolean() ? "شیر" : "خط") + " اومد!");
         }else{
          b
                  .setPositiveButton("Flip Again", new DialogInterface.OnClickListener() {
@@ -303,7 +304,7 @@ public class MainActivity extends Activity {
                  })
                  .setNegativeButton("OK",null)
                  .setTitle("Flip a Coin")
-                 .setMessage("Flipped a coin and it was " + (new Random().nextBoolean() ? "Heads" : "Tails"));
+                 .setMessage("Flipped a coin and it was " + (InnerRandom.nextBoolean() ? "Heads" : "Tails"));
         }
         b.show();
     }
@@ -312,7 +313,7 @@ public class MainActivity extends Activity {
         if(preferences.getInt("Lang",0) == 1){
             String[] suits = {"گیشنیز","پیک","خشت","دل"};
             String Number;
-            int i = new Random().nextInt(13) + 1;
+            int i = InnerRandom.nextInt(13) + 1;
             switch (i){
                 case 1:
                     Number = "آس";
@@ -338,11 +339,11 @@ public class MainActivity extends Activity {
                     })
                     .setNegativeButton("اوکی",null)
                     .setTitle("ورق بازی")
-                    .setMessage(Number + "ِ " + suits[new Random().nextInt(4)] + " اومد!");
+                    .setMessage(Number + "ِ " + suits[InnerRandom.nextInt(4)] + " اومد!");
         }else{
             String[] suits = {"Clovers","Spades","Diamonds","Hearts"};
             String Number;
-            int i = new Random().nextInt(13) + 1;
+            int i = InnerRandom.nextInt(13) + 1;
             switch (i){
                 case 1:
                     Number = "Ace";
@@ -368,7 +369,7 @@ public class MainActivity extends Activity {
                     })
                     .setNegativeButton("OK",null)
                     .setTitle("Draw a Card")
-                    .setMessage("It's " + Number + " of " + suits[new Random().nextInt(4)]);
+                    .setMessage("It's " + Number + " of " + suits[InnerRandom.nextInt(4)]);
         }
         b.show();
     }
