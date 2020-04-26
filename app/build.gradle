@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "com.hirbod.randomnumbergenerator"
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 28
         versionName "1.5.1-CF"
     }
@@ -23,5 +23,5 @@ android {
     }
 }
 dependencies {
-    implementation 'ir.tapsell.sdk:tapsell-sdk-android:4.3.3'
+    implementation 'ir.tapsell.sdk:tapsell-sdk-android:4.5.0'
 }
