@@ -11,9 +11,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/adad-sdk-ad-5.1.1" />
-            <option value="$PROJECT_DIR$/adad-sdk-banner-5.1.1" />
-            <option value="$PROJECT_DIR$/adad-sdk-core-5.1.1" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
