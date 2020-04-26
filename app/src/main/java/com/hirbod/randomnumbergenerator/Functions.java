@@ -13,13 +13,15 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 
 import java.math.BigInteger;
-import java.util.Random;
 
 class Functions {
     private static BigInteger randBig(BigInteger upperLimit){
         BigInteger randomNumber;
         do {
-            randomNumber = new BigInteger(upperLimit.bitLength(), new Random());
+            if(InnerRandom.UseSecureRandom)
+                randomNumber = new BigInteger(upperLimit.bitLength(), InnerRandom.secureRandom);
+            else
+                randomNumber = new BigInteger(upperLimit.bitLength(), InnerRandom.random);
         } while (randomNumber.compareTo(upperLimit) >= 0);
         return randomNumber;
     }
