@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ShowNumsActivity" />
+        <activity android:name=".PasswordActivity" android:screenOrientation="portrait" />
         <activity android:name=".MultiStepGeneratorActivity"
             android:screenOrientation="portrait"/>
         <meta-data
