@@ -231,8 +231,10 @@ public class MainActivity extends Activity {
         });
         //Updater{
         try{
-            int version = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
-            new CheckUpdates(this, version).execute();
+            if(preferences.getBoolean("CheckUpdates",true)) {
+                int version = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+                new CheckUpdates(this, version).execute();
+            }
         }catch (PackageManager.NameNotFoundException ex){
             ex.printStackTrace();
         }
@@ -544,7 +546,13 @@ public class MainActivity extends Activity {
                             activity.startActivity(browserIntent);
                         }
                     })
-                    .setNegativeButton(preferences.getInt("Lang",0) == 1 ? "بعدا" :"Later", null)
+                    .setNeutralButton(preferences.getInt("Lang",0) == 1 ? "بعدا" :"Later", null)
+                    .setNegativeButton(preferences.getInt("Lang", 0) == 1 ? "نشون نده" : "Never", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            preferences.edit().putBoolean("CheckUpdates",false).apply();
+                        }
+                    })
                     .show();
         }
     }
