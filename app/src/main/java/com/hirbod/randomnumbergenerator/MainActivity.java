@@ -477,6 +477,9 @@ public class MainActivity extends Activity {
                 ab.setIcon(R.drawable.ic_help_white_24dp);
                 ab.show();
                 break;
+            case R.id.PasswordGeneratorMenuButton:
+                startActivity(new Intent(getApplicationContext(), PasswordActivity.class));
+                break;
             case R.id.SequenceGenerator:
                 startActivity(new Intent(getApplicationContext(), MultiStepGeneratorActivity.class));
                 break;
