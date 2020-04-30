@@ -84,7 +84,7 @@ public class SettingsActivity extends Activity {
         findViewById(R.id.ShowSourceBTN).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/HirbodBehnam/RandomNumberGenerator"));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/HirbodBehnam/RandomNumberGenerator/tree/google-play"));
                 startActivity(intent);
             }
         });
