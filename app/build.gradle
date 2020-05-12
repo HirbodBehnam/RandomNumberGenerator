@@ -8,8 +8,8 @@ android {
         applicationId "com.hirbod.randomnumbergenerator"
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 31
-        versionName "1.7.0-CF"
+        versionCode 32
+        versionName "1.7.1-CF"
     }
     buildTypes {
         release {
