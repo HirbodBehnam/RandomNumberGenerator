@@ -122,6 +122,11 @@ public class PasswordActivity extends Activity {
                     if(((CheckBox) findViewById(R.id.PasswordUseNumbers)).isChecked())
                         chars.append(EXCLUDED_NUMBERS);
                 }
+                // check if non of them are selected
+                if(chars.length() == 0){
+                    Toast.makeText(PasswordActivity.this,"Please choose at least one of the options",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 // generate a password for user
                 int length = 0;
                 try{
